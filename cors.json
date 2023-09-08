@@ -1,0 +1,15 @@
+[
+    {
+      "origin": [
+        "http://localhost:3000",
+        "https://morimoripon.jp",
+        "https://stg.morimoripon.jp",
+        "https://admin.morimoripon.jp",
+        "http://localhost:9000",
+        "https://morimoripon-admin-git-develop-aisaac.vercel.app"
+      ],
+      "method": ["GET", "PUT"],
+      "responseHeader": ["Content-Type", "access-control-allow-origin", "access-control-allow-header"],
+      "maxAgeSeconds": 3600
+    }
+]

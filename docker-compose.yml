@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14
+    container_name: morimoripon_postgres
+    ports:
+      - 5434:5432
+    volumes:
+      - db-store:/var/lib/postgresql/data
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db:5432/morimoripon
+      - JWT_SECRET=3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R
+      - POSTGRES_DB=morimoripon
+      - POSTGRES_PASSWORD=password
+    networks:
+      - default_network
+  test-db:
+    image: postgres:14
+    container_name: morimoripon_postgres_test
+    ports:
+      - 5435:5432
+    volumes:
+      - db-store:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=morimoripon
+      - POSTGRES_PASSWORD=password
+    networks:
+      - default_network
+  api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    ports:
+      - "4000:4000"
+    networks:
+      - default_network
+volumes:
+  db-store:
+networks:
+  default_network:

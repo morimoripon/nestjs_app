@@ -1,0 +1,69 @@
+{
+  "name": "servicea",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@nestjs",
+      "**/@nestjs/**"
+    ]
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "tsc": "turbo run tsc",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "codegen": "graphql-codegen --config graphql/codegen.js",
+    "codegen:watch": "yarn codegen --watch graphql/**/*.gql",
+    "db:migrate": "cd apps/api && npx prisma migrate dev && npx prisma generate && npx prisma format",
+    "db:seed": "cd apps/api && npx prisma db seed",
+    "db:reset": "cd apps/api && npx prisma migrate reset",
+    "api:dev": "yarn workspace api start:dev",
+    "web:dev": "yarn workspace web dev",
+    "hasura:dev": "docker-compose up hasura",
+    "hasura:console": "cd apps/hasura && hasura console --admin-secret myadminsecretkey",
+    "hasura:metadata:apply": "cd apps/hasura && hasura metadata apply --admin-secret myadminsecretkey",
+    "hasura:metadata:export": "cd apps/hasura && hasura metadata export --admin-secret myadminsecretkey",
+    "hasura:metadata:ic": "cd apps/hasura && hasura metadata ic list --admin-secret myadminsecretkey",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@graphql-codegen/add": "^4.0.1",
+    "@graphql-codegen/cli": "2.12.1",
+    "@graphql-codegen/typescript": "2.7.3",
+    "@graphql-codegen/typescript-operations": "2.5.3",
+    "@graphql-codegen/typescript-react-apollo": "3.3.3",
+    "eslint-config-custom": "*",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.0.3",
+    "prettier": "latest",
+    "turbo": "latest"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "yarn@1.22.18",
+  "lint-staged": {
+    "apps/admin/**/*.@(ts|tsx)": [
+      "eslint --fix",
+      "prettier --w"
+    ],
+    "apps/web/**/*.@(ts|tsx)": [
+      "eslint --fix",
+      "prettier --w"
+    ],
+    "apps/api/src/**/*.@(ts|tsx)": [
+      "eslint --fix",
+      "prettier --w"
+    ]
+  },
+  "volta": {
+    "node": "18.16.0"
+  }
+}

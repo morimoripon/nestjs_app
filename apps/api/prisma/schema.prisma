@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  NORMAL
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model User {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email     String    @unique @db.VarChar
+  password  String    @db.VarChar
+  name      String?   @db.VarChar
+  role      Role      @default(NORMAL)
+  imageUrl  String?   @db.VarChar
+  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+  deletedAt DateTime?
+
+  formSetting     FormSetting?
+  submitHistories SubmitHistory[]
+}
+
+model FormSetting {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  companyName      String?  @db.VarChar
+  userName         String?  @db.VarChar
+  userNameFurigana String?  @db.VarChar
+  gender           Gender   @default(MALE)
+  phoneNumber      String?  @db.VarChar
+  description      String?  @db.VarChar
+  createdAt        DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt        DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  userId String @unique @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model SubmitHistory {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  clientId  String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  companyName      String? @db.VarChar
+  userName         String? @db.VarChar
+  userNameFurigana String? @db.VarChar
+  gender           Gender  @default(MALE)
+  phoneNumber      String? @db.VarChar
+  description      String? @db.VarChar
+
+  user   User   @relation(fields: [userId], references: [id])
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+model Client {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String   @db.VarChar
+  representName String?  @db.VarChar
+  createdAt     DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt     DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  submitHistories SubmitHistory[]
+}

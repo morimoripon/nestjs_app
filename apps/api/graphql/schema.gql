@@ -1,0 +1,140 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateClientInput {
+  name: String!
+  representName: String
+}
+
+input CreateFormSettingInput {
+  companyName: String
+  description: String
+  gender: String
+  phoneNumber: String
+  userName: String
+  userNameFurigana: String
+}
+
+type CurrentUserResponse {
+  bannedAt: DateTime
+  confirmedAt: DateTime
+  email: String!
+  id: String!
+  imageUrl: String
+  introduction: String
+  lineNotifySetAt: DateTime
+  name: String
+  payoutableAmount: Float!
+  phoneNumberSetAt: DateTime
+  secretBannedAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input GenerateImageUrlInput {
+  fileType: String!
+  name: String!
+}
+
+type GetMyFormSettingResponse {
+  companyName: String
+  description: String
+  gender: String!
+  id: String!
+  phoneNumber: String
+  userName: String
+}
+
+type ListClientsResponse {
+  createdAt: DateTime!
+  id: String!
+  name: String!
+  representName: String
+  submitHistories: [ListClientsSubmitHistoryResponse!]!
+  updatedAt: DateTime!
+}
+
+type ListClientsSubmitHistoryResponse {
+  description: String!
+  userName: String!
+}
+
+type Mutation {
+  createClient(data: CreateClientInput!): String!
+  createFormSetting(data: CreateFormSettingInput!): Boolean!
+  generateIdDocumentImageUrl(data: GenerateImageUrlInput!): String!
+  generateUserImageUrl(data: GenerateImageUrlInput!): String!
+  loginAdmin(data: UserLoginInput!): UserLoginResponse!
+  loginUser(data: UserLoginInput!): UserLoginResponse!
+  signUpUser(data: UserSignUpInput!): UserSignUpResponse!
+  updateAuth(data: UserUpdateInput!): Boolean!
+  updateFormSetting(data: UpdateFormSettingInput!): Boolean!
+  userUpdatePassword(data: UpdateUserPasswordInput!): Boolean!
+}
+
+type Query {
+  currentUser: CurrentUserResponse!
+  getMyFormSetting: GetMyFormSettingResponse!
+  listClients: [ListClientsResponse!]!
+  users: [UserResponse!]!
+}
+
+input UpdateFormSettingInput {
+  companyName: String
+  description: String
+  gender: String
+  phoneNumber: String
+  userName: String
+  userNameFurigana: String
+}
+
+input UpdateUserPasswordInput {
+  password: String!
+  userId: String!
+}
+
+type UserFormSettingResponse {
+  companyName: String
+  description: String
+  phoneNumber: String
+}
+
+input UserLoginInput {
+  email: String!
+  password: String!
+}
+
+type UserLoginResponse {
+  errorMessage: String
+  jwtToken: String!
+}
+
+type UserResponse {
+  formSetting: UserFormSettingResponse
+  id: String!
+  name: String
+}
+
+input UserSignUpInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+type UserSignUpResponse {
+  errorMessage: String
+  jwtToken: String!
+  userId: String!
+}
+
+input UserUpdateInput {
+  email: String
+  imageUrl: String
+  lineNotifyAccessToken: String
+  name: String
+  password: String
+}
