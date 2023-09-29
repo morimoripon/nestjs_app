@@ -14,18 +14,6 @@ services:
       - POSTGRES_PASSWORD=password
     networks:
       - default_network
-  test-db:
-    image: postgres:14
-    container_name: morimoripon_postgres_test
-    ports:
-      - 5435:5432
-    volumes:
-      - db-store:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=morimoripon
-      - POSTGRES_PASSWORD=password
-    networks:
-      - default_network
   api:
     build:
       context: .

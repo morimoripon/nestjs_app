@@ -30,7 +30,7 @@ export class UsersService {
         deletedAt: null,
       },
       include: {
-        formSetting: true,
+        items: true,
       },
     })
   }

@@ -5,10 +5,9 @@ import { GraphQLModule } from '@nestjs/graphql'
 import { PrismaModule } from 'nestjs-prisma'
 
 import { AuthModule } from './modules/auth/auth.module'
-import { ClientsModule } from './modules/clients/clients.module'
 import { CommonModule } from './modules/common/common.module'
-import { FormSettingsModule } from './modules/formSettings/form-settings.module'
 import { UsersModule } from './modules/users/users.module'
+import { ItemsModule } from './modules/item/items.module'
 
 @Module({
   imports: [
@@ -29,8 +28,7 @@ import { UsersModule } from './modules/users/users.module'
     AuthModule,
     CommonModule,
     UsersModule,
-    FormSettingsModule,
-    ClientsModule,
+    ItemsModule,
   ],
   controllers: [],
 })

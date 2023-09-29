@@ -6,7 +6,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator'
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { GenerateImageUrlInput } from '../common/util/generate-image-url.input'
 import { UpdateUserPasswordInput } from './dto/update-user-password.input'
-import { UserResponse } from './dto/users/user.response'
+import { UserResponse } from './dto/user.response'
 import { UsersService } from './users.service'
 
 @Resolver()

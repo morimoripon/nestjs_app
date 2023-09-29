@@ -4,8 +4,9 @@ import { PrismaService } from 'nestjs-prisma'
 
 import { ImageUtils } from '../src/modules/common/util/image.utils'
 import { UsersService } from '../src/modules/users/users.service'
-import { genFormSettings } from './fixtures/form-setting'
+import { genItem } from './fixtures/item'
 import { genUsers } from './fixtures/user'
+import { ItemsService } from '../src/modules/item/items.service'
 
 const prisma = new PrismaClient()
 
@@ -16,6 +17,7 @@ const main = async () => {
   const configService = new ConfigService()
   const imageUtils = new ImageUtils(configService)
   const usersService = new UsersService(prismaService, imageUtils)
+  const itemsService = new ItemsService(prismaService, imageUtils)
 
   const users = await genUsers()
   const userDatas = await Promise.all(
@@ -27,13 +29,15 @@ const main = async () => {
   )
 
   await Promise.all(
-    userDatas.map(userData => {
+    userDatas.map((userData, index) => {
       if (userData.errorMessage) {
+        console.log(userData.errorMessage)
         return null
       }
-      return prismaService.formSetting.create({
-        data: genFormSettings(userData.user),
-      })
+      const items = genItem(userData.user, index + 1);
+      return items.map(item =>
+        itemsService.create(userData.user.id, item)
+      )
     }),
   )
 

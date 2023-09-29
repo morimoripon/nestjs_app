@@ -15,11 +15,6 @@ enum Role {
   ADMIN
 }
 
-enum Gender {
-  MALE
-  FEMALE
-}
-
 model User {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email     String    @unique @db.VarChar
@@ -31,49 +26,54 @@ model User {
   updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
   deletedAt DateTime?
 
-  formSetting     FormSetting?
-  submitHistories SubmitHistory[]
+  items    Item[]
+  comments Comment[]
+  orders   Order[]
 }
 
-model FormSetting {
-  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  companyName      String?  @db.VarChar
-  userName         String?  @db.VarChar
-  userNameFurigana String?  @db.VarChar
-  gender           Gender   @default(MALE)
-  phoneNumber      String?  @db.VarChar
-  description      String?  @db.VarChar
-  createdAt        DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt        DateTime @default(now()) @updatedAt @db.Timestamptz(6)
-
-  userId String @unique @db.Uuid
-  user   User   @relation(fields: [userId], references: [id])
-}
-
-model SubmitHistory {
+model Item {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId    String   @db.Uuid
-  clientId  String   @db.Uuid
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(6)
 
-  companyName      String? @db.VarChar
-  userName         String? @db.VarChar
-  userNameFurigana String? @db.VarChar
-  gender           Gender  @default(MALE)
-  phoneNumber      String? @db.VarChar
-  description      String? @db.VarChar
+  name        String  @db.VarChar
+  description String? @db.VarChar
+  amount      Int     @db.Integer
+  imageUrl    String? @db.VarChar
 
-  user   User   @relation(fields: [userId], references: [id])
-  client Client @relation(fields: [clientId], references: [id])
+  user     User      @relation(fields: [userId], references: [id])
+  comments Comment[]
+  orders   Order[]
 }
 
-model Client {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name          String   @db.VarChar
-  representName String?  @db.VarChar
-  createdAt     DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt     DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+model Order {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  itemId    String   @db.Uuid
+  userId    String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(6)
 
-  submitHistories SubmitHistory[]
+  amount     Int     @db.Integer
+  name       String? @db.VarChar
+  prefecture String  @db.VarChar
+  address1   String  @db.VarChar
+  address2   String? @db.VarChar
+  status     String  @db.VarChar
+
+  item Item @relation(fields: [itemId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  itemId    String   @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  text String? @db.VarChar
+
+  user User @relation(fields: [userId], references: [id])
+  item Item @relation(fields: [itemId], references: [id])
 }

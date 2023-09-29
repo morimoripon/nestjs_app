@@ -20,5 +20,5 @@ USER nodejs
 
 
 COPY --from=builder --chown=nodejs:nodejs /app/ ./
-
+EXPOSE 4000
 CMD ["node", "dist/src/main.js"]

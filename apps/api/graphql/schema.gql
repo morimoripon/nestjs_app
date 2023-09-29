@@ -2,18 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input CreateClientInput {
-  name: String!
-  representName: String
-}
-
-input CreateFormSettingInput {
-  companyName: String
+input CreateItemInput {
+  amount: Float!
   description: String
-  gender: String
-  phoneNumber: String
-  userName: String
-  userNameFurigana: String
+  imageUrl: String
+  name: String!
 }
 
 type CurrentUserResponse {
@@ -40,67 +33,53 @@ input GenerateImageUrlInput {
   name: String!
 }
 
-type GetMyFormSettingResponse {
-  companyName: String
+input GetItemInput {
+  amount: Float
   description: String
-  gender: String!
-  id: String!
-  phoneNumber: String
-  userName: String
+  id: String
+  name: String
+  userId: String
 }
 
-type ListClientsResponse {
-  createdAt: DateTime!
-  id: String!
-  name: String!
-  representName: String
-  submitHistories: [ListClientsSubmitHistoryResponse!]!
-  updatedAt: DateTime!
-}
-
-type ListClientsSubmitHistoryResponse {
-  description: String!
-  userName: String!
+type GetItemResponse {
+  amount: Float
+  description: String
+  id: String
+  imageUrl: String
+  name: String
+  userId: String
 }
 
 type Mutation {
-  createClient(data: CreateClientInput!): String!
-  createFormSetting(data: CreateFormSettingInput!): Boolean!
+  createItem(data: CreateItemInput!): Boolean!
   generateIdDocumentImageUrl(data: GenerateImageUrlInput!): String!
   generateUserImageUrl(data: GenerateImageUrlInput!): String!
   loginAdmin(data: UserLoginInput!): UserLoginResponse!
   loginUser(data: UserLoginInput!): UserLoginResponse!
   signUpUser(data: UserSignUpInput!): UserSignUpResponse!
   updateAuth(data: UserUpdateInput!): Boolean!
-  updateFormSetting(data: UpdateFormSettingInput!): Boolean!
+  updateItem(data: UpdateItemInput!): Boolean!
   userUpdatePassword(data: UpdateUserPasswordInput!): Boolean!
 }
 
 type Query {
   currentUser: CurrentUserResponse!
-  getMyFormSetting: GetMyFormSettingResponse!
-  listClients: [ListClientsResponse!]!
+  getItemById(id: String!): GetItemResponse!
+  getItems(data: GetItemInput!): [GetItemResponse!]!
+  getMyItems: [GetItemResponse!]!
   users: [UserResponse!]!
 }
 
-input UpdateFormSettingInput {
-  companyName: String
+input UpdateItemInput {
+  amount: Float
   description: String
-  gender: String
-  phoneNumber: String
-  userName: String
-  userNameFurigana: String
+  imageUrl: String
+  name: String
 }
 
 input UpdateUserPasswordInput {
   password: String!
   userId: String!
-}
-
-type UserFormSettingResponse {
-  companyName: String
-  description: String
-  phoneNumber: String
 }
 
 input UserLoginInput {
@@ -114,8 +93,8 @@ type UserLoginResponse {
 }
 
 type UserResponse {
-  formSetting: UserFormSettingResponse
   id: String!
+  items: [GetItemResponse!]
   name: String
 }
 
