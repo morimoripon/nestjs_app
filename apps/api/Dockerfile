@@ -1,6 +1,6 @@
 FROM public.ecr.aws/docker/library/node:18-slim AS builder
-WORKDIR /app
-COPY ./apps/api .
+WORKDIR /usr/app
+COPY . /usr/app/
 RUN apt update -y && apt install -y make python3 libssl-dev
 RUN yarn install \
   && yarn run prisma:generate \
@@ -19,6 +19,6 @@ RUN adduser --system --uid 1001 nodejs
 USER nodejs
 
 
-COPY --from=builder --chown=nodejs:nodejs /app/ ./
+COPY --from=builder --chown=nodejs:nodejs /usr/app/ ./
 EXPOSE 4000
 CMD ["node", "dist/src/main.js"]

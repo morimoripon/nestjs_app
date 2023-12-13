@@ -1,7 +1,7 @@
 FROM public.ecr.aws/docker/library/node:18-slim
-WORKDIR /app
-COPY ./apps/frontend .
-RUN npm install
+WORKDIR /usr/app
+COPY . /usr/app/
+RUN npm install && npm run build
 
 EXPOSE 3000
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]

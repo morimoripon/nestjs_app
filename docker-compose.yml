@@ -2,7 +2,7 @@ version: '3.8'
 services:
   db:
     image: postgres:14
-    container_name: morimoripon_postgres
+    container_name: nest_app_postgres
     ports:
       - 5434:5432
     volumes:
@@ -15,17 +15,23 @@ services:
     networks:
       - default_network
   api:
+    container_name: nest_app_nestjs
     build:
-      context: .
-      dockerfile: ./apps/api/Dockerfile
+      context: ./apps/api
+      dockerfile: ./Dockerfile
     ports:
       - "4000:4000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@172.17.0.1:5434/morimoripon?schema=public
+      - JWT_SECRET=3EK6FD+o0+c7tzBNVfjpMkNDi2yARAAKzQlk8O2IKoxQu4nF7EdAh8s3TwpHwrdWT6R
+      - WEB_URL=http://172.17.0.1:3000
     networks:
       - default_network
   frontend:
+    container_name: nest_app_nextjs
     build:
-      context: .
-      dockerfile: ./apps/frontend/Dockerfile
+      context: ./apps/frontend
+      dockerfile: ./Dockerfile
     ports:
       - "3000:3000"
     networks:

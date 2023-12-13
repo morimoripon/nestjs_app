@@ -49,7 +49,7 @@ const User = () => {
         {data && data.users.map((v: UserResponse, i: number) => (
           <li key={String(i)}>
             <p>{v.name}</p>
-            {v.items?.map(item => <p>{item.name}</p>)}
+            {v.items?.map(item => <p key={item.id}>{item.name}</p>)}
 
           </li>
         ))}
