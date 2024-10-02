@@ -1,7 +1,7 @@
-
 ### DB 起動
 
 postgresのDBを起動する。
+
 ```
 docker-compose up -d db
 ```
@@ -23,5 +23,6 @@ yarn run dev
 - NestJS
   http://localhost:4000/
 
+  ホゲホゲ
 
 クエリは、http://localhost:4000/graphql で確認できる。
